@@ -1,0 +1,5 @@
+@my_blessed_Hotel_bot
+my_Hotels
+
+BOT_TOKEN = "5633191094:AAGqvYBVtiCz2jMlP4cCAT10VQgYvdMycSg"
+RAPID_API_KEY = "81f573b7a2msh157b866b65b5604p17a326jsn7593d54af000"
