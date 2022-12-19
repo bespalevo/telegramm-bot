@@ -13,8 +13,9 @@ def start(message: Message) -> None:
     with bot.retrieve_data(message.from_user.id, message.chat.id) as data:
         data["commands"] = message.text
 
-    with open('../../history.json', 'a', encoding='utf-8') as file:
-        json.dump(message.from_user.id, file, indent=4)
+    # with open('../../history.json', 'w', encoding='utf-8') as file:
+    #     json.dump(message.from_user.id, file)
+
 
 @bot.message_handler(state=UserInfoRequest.city)
 def get_city(message: Message) -> None:
