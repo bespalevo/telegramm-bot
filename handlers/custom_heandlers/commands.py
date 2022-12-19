@@ -1,13 +1,9 @@
-import loader
-from keyboards.reply.contact import request_contact
 from loader import bot
 from states.contact_info import UserInfoRequest
 from telebot.types import Message
-import re
 import json
 import requests
 from telebot.types import InputMediaPhoto
-import datetime
 
 
 @bot.message_handler(commands=['lowprice', 'highprice', 'bestdeal'])
@@ -17,6 +13,8 @@ def start(message: Message) -> None:
     with bot.retrieve_data(message.from_user.id, message.chat.id) as data:
         data["commands"] = message.text
 
+    with open('../../history.json', 'a', encoding='utf-8') as file:
+        json.dump(message.from_user.id, file, indent=4)
 
 @bot.message_handler(state=UserInfoRequest.city)
 def get_city(message: Message) -> None:
@@ -68,14 +66,17 @@ def get_quantity_hotels(message: Message) -> None:
 
 @bot.message_handler(state=UserInfoRequest.show_foto)
 def get_answer_user(message: Message) -> None:
-    if message.text == 'yes':
+    answer_yes = ["yes", "Yes", "да", "Да", "lf", "Lf", "da", "Da"]
+    answer_no = ["no", "No", "нет", "Нет", "Ytn", "ytn", "net", "Net"]
+
+    if message.text in answer_yes:
         bot.send_message(message.from_user.id, 'Спасибо, записал. Сколько фото показать?')
         bot.set_state(message.from_user.id, UserInfoRequest.quantity_foto, message.chat.id)
 
         with bot.retrieve_data(message.from_user.id, message.chat.id) as data:
             data['show_foto'] = message.text
 
-    elif message.text == 'no':
+    elif message.text in answer_no:
         with bot.retrieve_data(message.from_user.id, message.chat.id) as data:
             data['show_foto'] = message.text
             data['quantity_foto'] = '0'
@@ -193,7 +194,6 @@ def qwerty(data, message):
                 end_number = int(numbers[1])
                 if (add_id["destinationInfo"]["distanceFromDestination"]["value"] < start_number)\
                         or (add_id["destinationInfo"]["distanceFromDestination"]["value"] > end_number):
-
                     break
                 else:
                     id_list.append(add_id["id"])
@@ -223,7 +223,10 @@ def qwerty(data, message):
                 response2 = requests.request("POST", url, json=payload, headers=headers)
                 result3 = json.loads(response2.text)
 
-                if data["show_foto"] == "yes":
+                answer_yes = ["yes", "Yes", "да", "Да", "lf", "Lf", "da", "Da"]
+                answer_no = ["no", "No", "нет", "Нет", "Ytn", "ytn", "net", "Net"]
+
+                if data["show_foto"] in answer_yes:
                     foto_list = []
                     foto = []
                     for num in range(int(data["quantity_foto"])):
@@ -233,11 +236,13 @@ def qwerty(data, message):
 
                     medias = []
                     if i_requests["id"] in id_list:
-                        text = f'Отель: {i_requests["name"]}\n' \
+                        text = f'Город: {data["city"]}\n' \
+                               f'Отель: {i_requests["name"]}\n' \
                                f'Адрес: ' \
                                f'{result3["data"]["propertyInfo"]["summary"]["location"]["address"]["addressLine"]}\n' \
                                f'Расстояние от центра: ' \
                                f'{i_requests["destinationInfo"]["distanceFromDestination"]["value"]} миль\n' \
+                               f'Дата заезда и выезда: {data["check_in"]} / {data["check_out"]}\n' \
                                f'Цена: {i_requests["price"]["lead"]["formatted"]}\n' \
                                f'Кол-во фотографий: {data["quantity_foto"]}'
 
@@ -248,15 +253,18 @@ def qwerty(data, message):
                     if len(id_list) < int(data["quantity_hotels"]):
                         bot.send_message(message.from_user.id, 'Это все, что удалось найди по заданным критериям.')
 
-                elif data["show_foto"] == "no":
+                elif data["show_foto"] in answer_no:
                     if i_requests["id"] in id_list:
-                        text = f'Отель: {i_requests["name"]}\n' \
+                        text = f'Город: {data["city"]}\n' \
+                               f'Отель: {i_requests["name"]}\n' \
                                f'Адрес: ' \
                                f'{result3["data"]["propertyInfo"]["summary"]["location"]["address"]["addressLine"]}\n' \
                                f'Расстояние от центра: ' \
                                f'{i_requests["destinationInfo"]["distanceFromDestination"]["value"]} миль\n' \
+                               f'Дата заезда и выезда: {data["check_in"]} / {data["check_out"]}\n' \
                                f'Цена: {i_requests["price"]["lead"]["formatted"]}\n' \
                                f'Кол-во фотографий: {data["quantity_foto"]}'
+
                         bot.send_message(message.from_user.id, text)
 
                     if len(id_list) < int(data["quantity_hotels"]):
