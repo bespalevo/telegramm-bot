@@ -191,7 +191,6 @@ def qwerty(data, message):
                 numbers = data["distance"].split('-')
                 start_number = int(numbers[0])
                 end_number = int(numbers[1])
-                print('start and end:', start_number, '-', end_number)
                 if (add_id["destinationInfo"]["distanceFromDestination"]["value"] < start_number)\
                         or (add_id["destinationInfo"]["distanceFromDestination"]["value"] > end_number):
 
@@ -229,10 +228,8 @@ def qwerty(data, message):
                     foto = []
                     for num in range(int(data["quantity_foto"])):
                         foto.append(result3["data"]["propertyInfo"]["propertyGallery"]["images"][num]["image"]["url"])
-                        print('foto:', foto)
 
                     foto_list.append(foto)
-                    print('foto_list:', foto_list)
 
                     medias = []
                     if i_requests["id"] in id_list:
