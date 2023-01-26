@@ -14,4 +14,5 @@ class UserInfoRequest(StatesGroup):
     max_price = State()
     distance = State()
     address = State()
+    date_time = State()
 
