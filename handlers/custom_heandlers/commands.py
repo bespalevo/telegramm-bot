@@ -123,16 +123,11 @@ def get_answer_user(message: Message) -> None:
         bot.set_state(message.from_user.id, UserInfoRequest.quantity_foto, message.chat.id)
 
         with bot.retrieve_data(message.from_user.id, message.chat.id) as data:
-            data['show_foto'] = message.text
+            data['show_foto'] = True
 
     elif message.text in answer_no:
         with bot.retrieve_data(message.from_user.id, message.chat.id) as data:
-            answer_yes = ["yes", "Yes", "да", "Да", "lf", "Lf", "da", "Da"]
-            answer_no = ["no", "No", "нет", "Нет", "Ytn", "ytn", "net", "Net"]
-            if message.text == answer_yes:
-                data['show_foto'] = True
-            elif message.text == answer_no:
-                data['show_foto'] = False
+            data['show_foto'] = False
             data['quantity_foto'] = '0'
 
             if data['commands'] == "/bestdeal":
@@ -321,22 +316,7 @@ def qwerty(data, message):
 
                         bot.send_message(message.from_user.id, text)
                         count += 1
-
-                        # record(data)
-
-                        # if count == 1:
-                        #     new_media = [
-                        #         {message.from_user.id: [{"foto": False, "commands": data["commands"], "date_time": data["date_time"],
-                        #                                  f"hotel{count-1}": text + '\n' + "\n"}]}]
-                        #     with open('history.json', 'w', encoding='utf-8') as file:
-                        #         json.dump(new_media, file, indent=4)
-                        # else:
-                        #     with open('history.json', 'r', encoding='utf-8') as file:
-                        #         result_json = json.load(file)
-                        #         result_json[0][str(message.from_user.id)][0][f"hotel{count-1}"] = text + '\n' + "\n"
-                        #
-                        #         with open('history.json', 'w', encoding='utf-8') as file:
-                        #             json.dump(result_json, file, indent=4)
+                        record(data, message, text, count)
 
                     if len(id_list) < int(data["quantity_hotels"]):
                         bot.send_message(message.from_user.id, 'Это все, что удалось найди по заданным критериям.')
