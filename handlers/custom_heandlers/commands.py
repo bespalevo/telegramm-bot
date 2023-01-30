@@ -23,7 +23,7 @@ def start(message: Message) -> None:
                                           f'Команда: {commands}\n'
                                           f'Дата и время запроса: {date_time}')
 
-        if flag_for_foto == True:
+        if flag_for_foto:
 
             for i_num in range(len(result) + 1):
                 foto_his = re.findall(r'(https?:\/\/.+)', history[f"hotel{i_num}"])
@@ -127,7 +127,12 @@ def get_answer_user(message: Message) -> None:
 
     elif message.text in answer_no:
         with bot.retrieve_data(message.from_user.id, message.chat.id) as data:
-            data['show_foto'] = message.text
+            answer_yes = ["yes", "Yes", "да", "Да", "lf", "Lf", "da", "Da"]
+            answer_no = ["no", "No", "нет", "Нет", "Ytn", "ytn", "net", "Net"]
+            if message.text == answer_yes:
+                data['show_foto'] = True
+            elif message.text == answer_no:
+                data['show_foto'] = False
             data['quantity_foto'] = '0'
 
             if data['commands'] == "/bestdeal":
@@ -273,10 +278,7 @@ def qwerty(data, message):
                 response2 = requests.request("POST", url, json=payload, headers=headers)
                 result3 = json.loads(response2.text)
 
-                answer_yes = ["yes", "Yes", "да", "Да", "lf", "Lf", "da", "Da"]
-                answer_no = ["no", "No", "нет", "Нет", "Ytn", "ytn", "net", "Net"]
-
-                if data["show_foto"] in answer_yes:
+                if data["show_foto"]:
                     foto = []
                     for num in range(int(data["quantity_foto"])):
                         foto.append(result3["data"]["propertyInfo"]["propertyGallery"]["images"][num]["image"]["url"])
@@ -299,26 +301,12 @@ def qwerty(data, message):
 
                         bot.send_media_group(chat_id=message.from_user.id, media=medias)
                         count += 1
-
-                        if count == 1:
-                            new_media = [
-                                {message.from_user.id: [{"foto": True, "commands": data["commands"], "date_time": data["date_time"],
-                                                         f"hotel{count-1}": text + '\n' + "\n".join(foto)}]}]
-                            with open('history.json', 'w', encoding='utf-8') as file:
-                                json.dump(new_media, file, indent=4)
-                        else:
-                            with open('history.json', 'r', encoding='utf-8') as file:
-                                result_json = json.load(file)
-                                result_json[0][str(message.from_user.id)][0][
-                                    f"hotel{count-1}"] = text + '\n' + "\n".join(foto)
-
-                                with open('history.json', 'w', encoding='utf-8') as file:
-                                    json.dump(result_json, file, indent=4)
+                        record(data, message, text, count, foto)
 
                     if len(id_list) < int(data["quantity_hotels"]):
                         bot.send_message(message.from_user.id, 'Это все, что удалось найди по заданным критериям.')
 
-                elif data["show_foto"] in answer_no:
+                else:
                     if i_requests["id"] in id_list:
                         text = f'City: {data["city"]}\n' \
                                f'Hotel: {i_requests["name"]}\n' \
@@ -334,22 +322,50 @@ def qwerty(data, message):
                         bot.send_message(message.from_user.id, text)
                         count += 1
 
-                        if count == 1:
-                            new_media = [
-                                {message.from_user.id: [{"foto": False, "commands": data["commands"], "date_time": data["date_time"],
-                                                         f"hotel{count-1}": text + '\n' + "\n"}]}]
-                            with open('history.json', 'w', encoding='utf-8') as file:
-                                json.dump(new_media, file, indent=4)
-                        else:
-                            with open('history.json', 'r', encoding='utf-8') as file:
-                                result_json = json.load(file)
-                                result_json[0][str(message.from_user.id)][0][f"hotel{count-1}"] = text + '\n' + "\n"
+                        # record(data)
 
-                                with open('history.json', 'w', encoding='utf-8') as file:
-                                    json.dump(result_json, file, indent=4)
+                        # if count == 1:
+                        #     new_media = [
+                        #         {message.from_user.id: [{"foto": False, "commands": data["commands"], "date_time": data["date_time"],
+                        #                                  f"hotel{count-1}": text + '\n' + "\n"}]}]
+                        #     with open('history.json', 'w', encoding='utf-8') as file:
+                        #         json.dump(new_media, file, indent=4)
+                        # else:
+                        #     with open('history.json', 'r', encoding='utf-8') as file:
+                        #         result_json = json.load(file)
+                        #         result_json[0][str(message.from_user.id)][0][f"hotel{count-1}"] = text + '\n' + "\n"
+                        #
+                        #         with open('history.json', 'w', encoding='utf-8') as file:
+                        #             json.dump(result_json, file, indent=4)
 
                     if len(id_list) < int(data["quantity_hotels"]):
                         bot.send_message(message.from_user.id, 'Это все, что удалось найди по заданным критериям.')
+
+
+def record(data, message, text, count, *args, **kwargs):
+    if count == 1:
+        if data["show_foto"]:
+            new_media = [
+                {message.from_user.id: [{"foto": True, "commands": data["commands"], "date_time": data["date_time"],
+                                         f"hotel{count - 1}": text + '\n' + "\n".join(*args)}]}]
+        else:
+            new_media = [
+                {message.from_user.id: [{"foto": False, "commands": data["commands"], "date_time": data["date_time"],
+                                         f"hotel{count - 1}": text + '\n' + "\n"}]}]
+
+        with open('history.json', 'w', encoding='utf-8') as file:
+            json.dump(new_media, file, indent=4)
+    else:
+        with open('history.json', 'r', encoding='utf-8') as file:
+            result_json = json.load(file)
+            if data["show_foto"]:
+                result_json[0][str(message.from_user.id)][0][
+                    f"hotel{count - 1}"] = text + '\n' + "\n".join(*args)
+            else:
+                result_json[0][str(message.from_user.id)][0][f"hotel{count - 1}"] = text + '\n' + "\n"
+
+            with open('history.json', 'w', encoding='utf-8') as file:
+                json.dump(result_json, file, indent=4)
 
 
 def request(data, id_city, message):

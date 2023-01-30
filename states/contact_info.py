@@ -8,7 +8,6 @@ class UserInfoRequest(StatesGroup):
     quantity_hotels = State()
     quantity_foto = State()
     show_foto = State()
-    foto = State()
     commands = State()
     min_price = State()
     max_price = State()

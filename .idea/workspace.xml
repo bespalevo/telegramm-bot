@@ -5,18 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0671a6f3-f284-4dea-8aa9-8195791ef4d8" name="Changes" comment=".">
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/handlers/custom_heandlers/history.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/python_basic_diploma.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/python_basic_diploma.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/handlers/custom_heandlers/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/handlers/custom_heandlers/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/handlers/custom_heandlers/commands.py" beforeDir="false" afterPath="$PROJECT_DIR$/handlers/custom_heandlers/commands.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/handlers/custom_heandlers/history.py" beforeDir="false" afterPath="$PROJECT_DIR$/handlers/custom_heandlers/history.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/handlers/custom_heandlers/survey.py" beforeDir="false" afterPath="$PROJECT_DIR$/handlers/custom_heandlers/survey.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/history.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/handlers/custom_heandlers/survey.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/history.json" beforeDir="false" afterPath="$PROJECT_DIR$/history.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/states/contact_info.py" beforeDir="false" afterPath="$PROJECT_DIR$/states/contact_info.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/test.py" afterDir="false" />
     </list>
@@ -293,7 +286,14 @@
       <option name="project" value="LOCAL" />
       <updated>1671456033102</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary=".">
+      <created>1674745637733</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1674745637733</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">

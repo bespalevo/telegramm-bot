@@ -1,7 +1,7 @@
+import re
+import json
+import datetime
 
-
-
-
-dict_a = [{"city": {"id": 3}}, {"city": {"id": 1}}]
-
-print(sorted(dict_a, key=lambda i: i["city"]["id"]))
+date = str(datetime.datetime.utcnow())
+print(date)
+print(type(date))
