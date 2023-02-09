@@ -1,0 +1,13 @@
+[
+    {
+        "479770974": [
+            {
+                "foto": false,
+                "commands": "/lowprice",
+                "date_time": "2023-01-30 10:07:41.180342",
+                "hotel0": "City: new york\nHotel: 31 Street Broadway Hotel\nAddress: 38 West 31st Street, New York, NY, 10001\nDistance from the center: 2.56 miles\nArrival date: 2022-10-10\nDeparture date:  2022-10-19\nPrice: $44\nNumber of photos: 0\n\n",
+                "hotel1": "City: new york\nHotel: Red Roof PLUS+ Newark Liberty Airport - Carteret\nAddress: 1000 Roosevelt Ave, Carteret, NJ, 07008\nDistance from the center: 14.45 miles\nArrival date: 2022-10-10\nDeparture date:  2022-10-19\nPrice: $74\nNumber of photos: 0\n\n"
+            }
+        ]
+    }
+]
